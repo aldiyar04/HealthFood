@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="container mt-5">
+            <div class="row">
+                <form action="edit_account" method="post" class="col-md-6 offset-md-3 border p-4 bg-light shadow">
+                    <h1 class="h4 mb-5 text-secondary text-center">My Account</h1>
+
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label for="firstname" class="form-label">First Name</label>
+                            <input type="text" name="firstname" id="firstname" class="form-control"
+                                placeholder="{{ user.first_name }}" value="{{ user.first_name }}">
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="lastname" class="form-label">Last Name</label>
+                            <input type="text" name="lastname" id="lastname" class="form-control"
+                                placeholder="{{ user.last_name }}" value="{{ user.last_name }}">
+                        </div>
+
+                        <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" name="email" id="email" class="form-control"
+                                placeholder="{{ user.email }}" value="{{ user.email }}">
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]-[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                placeholder="{{ user.phone }}" value="{{ user.phone }}">
+                        </div>
+
+                        <div class="mb-3 col-12">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" name="address" id="address" class="form-control"
+                                placeholder="{{ user.address }}" value="{{ user.address }}">
+                        </div>
+
+                        <!-- The "edit_account" view needs the old email and phone. -->
+                        <input type="hidden" name="old_email" value="{{ user.email }}">
+                        <input type="hidden" name="old_phone" value="{{ user.phone }}">
+
+                        <div class="my-4 text-center">
+                            <button type="submit" class="btn btn-primary px-4 float-end">Save</button>
+                        </div>
+                    </form>
+            </div>
+
+            <div class="row mt-5 text-center">
+                <div class="col-md-6 offset-md-3">
+                    <a href="signout" class="btn btn-outline-dark px-3">Sign Out</a>
+                </div>
+            </div>
+
+            <div class="row mt-5 text-center">
+                <form action="delete_account" method="post" class="col-md-6 offset-md-3">
+                    {% csrf_token %}
+                    <small>
+                        <button id="delete_account_btn" type="submit">Delete Account</button>
+                    </small>
+
+                    <!-- Style delete account button as a link -->
+                    <style>
+                        #delete_account_btn {
+                            background: none!important;
+                            border: none;
+                            padding: 0!important;
+                            font-family: arial, sans-serif;
+                            color: rgb(136, 136, 136);
+                            cursor: pointer;
+                        }
+                    </style>
+
+                    <!-- The "delete_account" view needs to know the email. -->
+                    <input type="hidden" name="email" value="{{ user.email }}">
+                </form>
+            </div>
+        </div>
+        
+
+
+
+        <!-- Password change modal -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="enroll">Add To Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">Sorry, you need to be signed in to do this.</p>
+    
+    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="signin.html" class="navCollapsable btn btn-outline-success">Sign in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#changePasswordBtn').click(
+                function() {
+                    $('#changePasswordModal').modal('show');
+                }
+            );
+        </script>
+    {% else %}
+        {% include 'access_denied.html' %}
+    {% endif %}
+
+{% endblock %}

@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import auth
+from django.contrib import messages
 
-from .models import Product
+from .models import Product, Customer
 
 
 def index(request):
@@ -20,11 +22,106 @@ def contact(request):
 
 
 def signin(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        customer = auth.authenticate(email=email, password=password)
+
+        if customer:
+            auth.login(request, customer)
+            return redirect('/shop')
+        else:
+            messages.error(request, 'Invalid email or password.')
+
     return render(request, 'signin.html')
 
 
+def signout(request):
+    auth.logout(request)
+    return redirect('/')
+
+
 def register(request):
+    if request.method == 'POST':
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        valid = True
+
+        if Customer.objects.filter(email=email):
+            messages.add_message(request, messages.ERROR, 'Email ' + email + ' is already taken.')
+            valid = False
+        if Customer.objects.filter(phone=phone):
+            messages.add_message(request, messages.ERROR, 'Phone ' + phone + ' is already taken.')
+            valid = False
+        if password != password2:
+            messages.add_message(request, messages.ERROR, 'Provided passwords do not match.')
+            valid = False
+
+        if valid:
+            customer = Customer.objects.create_user(first_name=first_name, last_name=last_name, 
+                                                email=email, phone=phone, address=address, password=password)
+            customer.save()
+            messages.success(request, 'You registered successfully!')
+
     return render(request, 'register.html')
+
+
+def account(request):
+    return render(request, 'account.html')
+
+
+def edit_account(request):
+    if request.method == 'POST':
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        address = request.POST['address']
+
+        old_email = request.POST['old_email']
+        old_phone = request.POST['old_phone']
+
+        valid = True
+
+        if Customer.objects.filter(email=email) and email != old_email:
+            messages.add_message(request, messages.ERROR, 'Email ' + email + ' is already taken.')
+            valid = False
+        if Customer.objects.filter(phone=phone) and phone != old_phone:
+            messages.add_message(request, messages.ERROR, 'Phone ' + phone + ' is already taken.')
+            valid = False
+
+        if valid:
+            customer = Customer.objects.get(email=old_email)
+
+            # Update customer
+            customer.first_name = first_name
+            customer.last_name = last_name
+            customer.email = email
+            customer.phone = phone
+            customer.address = address
+
+            customer.save()
+            messages.success(request, 'Edited successfully')
+
+    return render(request, 'account.html')
+
+
+def delete_account(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        customer = Customer.objects.get(email=email)
+        customer.delete()
+        messages.info(request, 'Your account has been deleted.')
+    
+    return render(request, 'signin.html')
+
 
 def shop(request):
     products = Product.objects.all()
