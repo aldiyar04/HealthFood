@@ -127,6 +127,35 @@ def shop(request):
     products = Product.objects.all()
     return render(request, 'shop.html', {'product_groups': get_product_groups(products)})
 
+
+def product(request, slug=None):
+    product = None
+
+    if slug is not None:
+        product = Product.objects.get(slug=slug)
+        if product:
+            # product_description_paras = product.description.split(r'\s{2,}')
+            # product_description_paras = [paragraph.strip() for paragraph in product_description_paras]
+            product_description_paras = product.description.split('\r\n')
+            product_description_paras = [paragraph.strip() for paragraph in product_description_paras if paragraph]
+            product_short_description = product_description_paras[0]
+            for paragraph in product_description_paras:
+                if len(paragraph) > 50:
+                    product_short_description = paragraph
+                    break
+
+            context = {
+                'product': product, 
+                'product_description_paras': product_description_paras,
+                'product_short_description': product_short_description,
+            }
+
+        return render(request, 'product.html', context)
+
+    return render(request, 'index.html')
+    
+
+
 def get_product_groups(products):
     product_groups = []
     i = 0

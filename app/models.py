@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.text import slugify 
+
 
 
 class CustomerManager(BaseUserManager):
@@ -80,11 +82,16 @@ class Customer(AbstractBaseUser):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=255, unique=True)
     image = models.ImageField(upload_to='products')
     description = models.TextField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     stock = models.IntegerField
+    slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
 
 
 class Order(models.Model):

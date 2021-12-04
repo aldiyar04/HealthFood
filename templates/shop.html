@@ -18,10 +18,7 @@
         <div class="row text-center">
             {% for product in product_group %}
                 <div class="col-lg-3 col-sm-6 mb-4 pb-2 border">
-                {% comment %} {% with 'img/'|add:product.img as imgUrl %} {% endcomment %}
-                {% comment %} <a href="#"><img src="{% static imgUrl %}" class="d-block w-100" alt=""></a> {% endcomment %}
-                {% comment %} {% endwith %} {% endcomment %}
-                <a href="#"><img src="{{product.image.url}}" class="d-block w-100" alt=""></a>
+                <a href="/products/{{product.slug}}"><img src="{{product.image.url}}" class="d-block w-100" alt=""></a>
                 <div class="fw-bold"><a href="#" class="text-body text-decoration-none">{{product.name}}</a></div>
                 <div>${{product.price}}</div>
             </div>
