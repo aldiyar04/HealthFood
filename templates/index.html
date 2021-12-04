@@ -21,15 +21,10 @@
 
             
                 {% for product_group in trending_product_groups %}
-                    <div class="carousel-item {% if product_group.0.name == 'Creamy Oat Spread' %}active{% endif %}">
+                    <div class="carousel-item {% if product_group.0.name == 'Creamy Oak Spread' %}active{% endif %}">
                         <div class="row text-center">
 
                             {% for product in product_group %}
-                                {% comment %} {% with 'img/'|add:product.img as imgUrl %} {% endcomment %}
-                                {% comment %} <div class="col-3"><img src="{% static imgUrl %}" class="d-block w-100" alt="">
-                                <div class="fw-bold">{{product.name}}</div>
-                                <div>${{product.price}}</div></div> {% endcomment %}
-                                {% comment %} {% endwith %} {% endcomment %}
                                 <div class="col-3"><img src="{{product.image.url}}" class="d-block w-100" alt="">
                                     <div class="fw-bold">{{product.name}}</div>
                                     <div>${{product.price}}</div></div>
