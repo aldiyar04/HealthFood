@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Product -->
+    <section class="my-5">
+        <div class="container">
+            <div class="row justify-content-between">
+                <!-- Product Carousel -->
+                <div class="col-lg my-3 px-3">
+                    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0"
+                                class="active"></button>
+                            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="1"></button>
+                            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="2"></button>
+                            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="3"></button>
+                        </div>
+
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="img/products/product14.jpeg" class="d-block w-100" alt="">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="img/products/product14/product14-2.jpeg" class="d-block w-100" alt="">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="img/products/product14/product14-3.jpeg" class="d-block w-100" alt="">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="img/products/product14/product14-4.jpeg" class="d-block w-100" alt="">
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Brief Info -->
+                <div class="col-lg pt-5 pb-4 d-flex flex-column justify-content-between">
+                    <h1 class="text-center text-lg-start mb-4 mb-lg-0">Alpro Almond Drink 1 Litre <br><span
+                            class="h4">$5.99</span>
+                    </h1>
+
+                    <p>Almond drink with added calcium and vitamins. Alpro were born plant-based, way back in 1980, and
+                        we've been banging that big, plant-based drum
+                        ever since. Our mission is the same now as it was then. To make delicious food that's healthy
+                        for you and healthy for the planet. And we go the extra mile to do it. Using less water and
+                        energy. Sourcing ingredients grown in a way that puts goodness back into the earth. And
+                        developing more and more sustainable, plant-based packaging.</p>
+
+                    <div class="d-flex justify-content-end">
+                        <span class="text-secondary col-2 d-flex align-items-center"
+                            style="font-size: 90%">$5.99/litre</span>
+                        </span>
+
+                        <input class="col-2 me-3" type="text" id="productQuantity" class="">
+                        </span>
+                        <button class="col-3 btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#addToCartMessage">Add to cart</button>
+                    </div>
+                </div>
+
+                <!-- Product Elaborate Description -->
+                <div class="mt-5 px-md-5">
+                    <h2 class="mb-4">Product Description</h2>
+
+                    <p>Almond drink with added calcium and vitamins.</p>
+
+                    <p>Alpro were born plant-based, way back in 1980, and we've been banging that big, plant-based drum
+                        ever since. Our mission is the same now as it was then. To make delicious food that's healthy
+                        for
+                        you and healthy for the planet. And we go the extra mile to do it. Using less water and energy.
+                        Sourcing ingredients grown in a way that puts goodness back into the earth. And developing more
+                        and
+                        more sustainable, plant-based packaging.</p>
+
+                    <p>You're a sensible person, and that's cool. But every now and then, it's OK to go nuts. Even as
+                        nutty
+                        as our crazily awesome Almond drink. You can mix it in your coffee and hot drinks, cold shakes
+                        and
+                        smoothies, splash it on your cereal and stir it into porridge. Or just enjoy it as it comes,
+                        refreshingly chilled and sipped from a glass. Because lovely as milk might be, isn't it great to
+                        have more choice? Totally plant based and dairy free, this is naturally perfect for a vegan
+                        diet.
+                        But why should vegans have all the fun? Vegetarian, flexitarian, or just want to give it a go?
+                        Anyone can pour a little extra plant-based delicious into their everyday, vegan or not, we say!
+                        At Alpro we call our products almond drinks and not almond milks - why, you ask? By definition -
+                        milk is a nutrient-rich food produced by mammals - and our tasty almond drinks are completely
+                        plant-based!</p>
+
+                    <p>Good for you*, good for the planet. We're proud to have been a certified B Corp company since
+                        2018.
+                        Making us part of a global movement that believes businesses can be a force for good in society,
+                        and
+                        should do things in a caring, sustainable way that has a positive impact on people and planet.
+                        Like
+                        the way our almonds are grown. On small farms around the Mediterranean, where nature is
+                        nurtured,
+                        pollinating insects are protected, and the trees mostly watered by rain. And good inside, good
+                        outside! By 2025, all of our packs will be, not just recyclable, but made from 100% already
+                        recycled
+                        or plant-based materials. Bye bye, polystyrene. Hello, more recycled, recyclable PET and
+                        sustainably
+                        grown sugarcane cartons!<br>*A source of calcium. Calcium is needed for the maintenance of
+                        normal bones. A varied and
+                        balanced
+                        diet and a healthy lifestyle are recommended for good health.</p>
+
+                    <p>FSC - FSC® Mix, Board from responsible sources, FSC® C014047, www.fsc.org</p>
+
+                    <ul>
+                        <li>100% plant-based</li>
+                        <li>Dairy free</li>
+                        <li>Naturally free from lactose</li>
+                        <li>Gluten free</li>
+                        <li>Low in sugars</li>
+                        <li>Naturally low in fat & saturated fats</li>
+                        <li>Source of calcium</li>
+                        <li>Source of vitamins B2, B12 & D</li>
+                        <li>Chilled from the fridge</li>
+                        <li>Perfect for vegans</li>
+                    </ul>
+
+
+                    <p>Pack size: 1L</p>
+
+                    <p>Calcium is needed for the maintenance of normal bones</p>
+
+                    Source of calcium
+                    Source of vitamins B2, B12 & D
+                    Low in sugars
+                    Naturally low in fat & saturated fats
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Add To Cart Modal Message -->
+    <div class="modal fade" id="addToCartMessage" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enroll">Add To Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">Sorry, you need to be signed in to do this.</p>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="signin.html" class="navCollapsable btn btn-outline-success">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

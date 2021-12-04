@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Shop -->
+    <div class="container mt-5">
+        <!-- Search Bar -->
+        <form class="input-group mb-5 mt-3 px-md-5">
+            <input type="search" name="search" class="form-control shadow" placeholder="Search">
+            <button type="submit" class="btn btn-primary shadow">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+
+        <!-- Catalog -->
+        {% for product_group in product_groups %}  
+        <div class="row text-center">
+            {% for product in product_group %}
+                <div class="col-lg-3 col-sm-6 mb-4 pb-2 border">
+                {% comment %} {% with 'img/'|add:product.img as imgUrl %} {% endcomment %}
+                {% comment %} <a href="#"><img src="{% static imgUrl %}" class="d-block w-100" alt=""></a> {% endcomment %}
+                {% comment %} {% endwith %} {% endcomment %}
+                <a href="#"><img src="{{product.image.url}}" class="d-block w-100" alt=""></a>
+                <div class="fw-bold"><a href="#" class="text-body text-decoration-none">{{product.name}}</a></div>
+                <div>${{product.price}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}   
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="container d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item disabled"><a class="page-link fw-bold" href="#">&lt;</a></li>
+
+                <li class="page-item disabled"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                <li class="page-item"><a class="page-link" href="#">7</a></li>
+                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                <li class="page-item"><a class="page-link" href="#">9</a></li>
+                <li class="page-item"><a class="page-link" href="#">10</a></li>
+                <li class="page-item"><a class="page-link" href="#">11</a></li>
+                <li class="page-item"><a class="page-link" href="#">12</a></li>
+
+                <li class="page-item"><a class="page-link fw-bold" href="#">&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
