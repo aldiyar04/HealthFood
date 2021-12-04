@@ -57,58 +57,63 @@
             </div>
 
             <div class="row mt-5 text-center">
-                <form action="delete_account" method="post" class="col-md-6 offset-md-3">
-                    {% csrf_token %}
-                    <small>
-                        <button id="delete_account_btn" type="submit">Delete Account</button>
-                    </small>
-
-                    <!-- Style delete account button as a link -->
-                    <style>
-                        #delete_account_btn {
-                            background: none!important;
-                            border: none;
-                            padding: 0!important;
-                            font-family: arial, sans-serif;
-                            color: rgb(136, 136, 136);
-                            cursor: pointer;
-                        }
-                    </style>
-
-                    <!-- The "delete_account" view needs to know the email. -->
-                    <input type="hidden" name="email" value="{{ user.email }}">
-                </form>
+                <small>
+                    <button id="delete_account_btn">Delete Account</button>
+                </small>
+                <!-- Style delete account button as a link -->
+                <style>
+                    #delete_account_btn {
+                        background: none!important;
+                        border: none;
+                        padding: 0!important;
+                        font-family: arial, sans-serif;
+                        color: rgb(136, 136, 136);
+                        cursor: pointer;
+                    }
+                </style>
             </div>
         </div>
         
 
 
 
-        <!-- Password change modal -->
-        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+        <!-- Delete account modal -->
+        <div class="modal fade" id="delete_account_modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="enroll">Add To Cart</h5>
+                        <h5 class="modal-title">Are you sure?</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="lead">Sorry, you need to be signed in to do this.</p>
+                        <p class="lead">This will permanently delete your account.</p>
     
     
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <a href="signin.html" class="navCollapsable btn btn-outline-success">Sign in</a>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                        <form action="delete_account" method="post" class="col-md-6 offset-md-3">
+                            {% csrf_token %}
+
+                            <button type="submit" class="navCollapsable btn btn-outline-danger">
+                                Delete Account
+                            </button>
+        
+                            <!-- The "delete_account" view needs to know the email. -->
+                            <input type="hidden" name="email" value="{{ user.email }}">
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
         <script>
-            $('#changePasswordBtn').click(
+            $('#delete_account_btn').click(
                 function() {
-                    $('#changePasswordModal').modal('show');
+                    $('#delete_account_modal').modal('show');
                 }
             );
         </script>
