@@ -33,28 +33,28 @@
                     </li>
 
                     <li class="nav-item {% if request.path == 'shop' %}active{% endif %}">
-                        <a href="shop" class="nav-link">Shop</a>
+                        <a href="/shop" class="nav-link">Shop</a>
                     </li>
 
                     <li class="nav-item {% if request.path == 'faq' %}active{% endif %}">
-                        <a href="faq" class="nav-link">FAQ</a>
+                        <a href="/faq" class="nav-link">FAQ</a>
                     </li>
 
                     <li class="nav-item {% if request.path == 'about' %}active{% endif %}">
-                        <a href="about" class="nav-link">About Us</a>
+                        <a href="/about" class="nav-link">About Us</a>
                     </li>
 
                     <li class="nav-item {% if request.path == 'contact' %}active{% endif %}">
-                        <a href="contact" class="nav-link">Contact</a>
+                        <a href="/contact" class="nav-link">Contact</a>
                     </li>
 
                     {% if user.is_authenticated %}
                     <li class="nav-item {% if request.path == 'signin' %}active{% endif %}">
-                        <a href="account" class="navCollapsable btn btn-outline-success">My Account</a>
+                        <a href="/account" class="navCollapsable btn btn-outline-success">My Account</a>
                     </li>
                     {% else %}
                     <li class="nav-item {% if request.path == 'signin' %}active{% endif %}">
-                        <a href="signin" class="navCollapsable btn btn-outline-success">Sign in</a>
+                        <a href="/signin" class="navCollapsable btn btn-outline-success">Sign in</a>
                     </li>
                     {% endif %}
                 </ul>
