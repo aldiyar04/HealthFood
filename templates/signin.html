@@ -8,8 +8,8 @@
 
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4 offset-md-4">
-                <form action="signin" class="signupForm border pt-5 pb-4 px-4 bg-light shadow" method="post">
+            <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                <form action="{% url 'signin' %}" class="signupForm border pt-5 pb-4 px-4 bg-light shadow" method="post">
 
                     {% csrf_token %}
 

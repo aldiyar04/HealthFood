@@ -18,7 +18,8 @@
         <div class="row text-center">
             {% for product in product_group %}
                 <div class="col-lg-3 col-sm-6 mb-4 pb-2 border">
-                <a href="/products/{{product.slug}}"><img src="{{product.image.url}}" class="d-block w-100" alt=""></a>
+                <!-- /products/{{product.slug}}   - this was in href below  -->
+                <a href="{% url 'product' slug=product.slug %}"><img src="{{product.image.url}}" class="d-block w-100" alt=""></a>
                 <div class="fw-bold"><a href="#" class="text-body text-decoration-none">{{product.name}}</a></div>
                 <div>${{product.price}}</div>
             </div>

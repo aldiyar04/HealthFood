@@ -15,4 +15,5 @@ urlpatterns = [
     path('account', views.account, name='account'),
     path('edit_account', views.edit_account, name='edit_account'),
     path('delete_account', views.delete_account, name='delete_account'),
+    path('cart', views.cart, name='cart'),
 ]

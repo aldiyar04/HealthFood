@@ -21,6 +21,7 @@
 
                 <div class="col-md">
                     <form action="">
+                        {% if not user.is_authenticated %}
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="name" class="form-control" id="name" placeholder="Enter your name">
@@ -35,6 +36,7 @@
                             <input type="tel" class="form-control" id="phone" pattern="[0-9]-[0-9]{3}-[0-9]{3}-[0-9]{4}"
                                 placeholder="8-707-123-4567">
                         </div>
+                        {% endif %}
 
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject</label>
@@ -71,7 +73,7 @@
                     <style>
                         .mapouter {
                             position: relative;
-                            text-align: right;
+                            text-align: center;
                             height: 500px;
                             width: 100%;
                         }
@@ -86,7 +88,6 @@
                     </style>
                 </div>
             </div>
-        </div>
     </section>
 
 {% endblock %}

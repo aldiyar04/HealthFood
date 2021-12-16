@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import auth
 from django.contrib import messages
@@ -6,8 +8,13 @@ from .models import Product, Customer
 
 
 def index(request):
-    trending_products = Product.objects.all()[4:]
-    return render(request, 'index.html', {'trending_product_groups': get_product_groups(trending_products)})
+    products = Product.objects.all()
+    trending_products = products[4:16]
+    context = {
+        'products': json.dumps(products),
+        'trending_product_groups': get_product_groups(trending_products),
+    }
+    return render(request, 'index.html', context)
 
 def faq(request):
     return render(request, 'faq.html')
@@ -121,6 +128,9 @@ def delete_account(request):
         messages.info(request, 'Your account has been deleted.')
     
     return render(request, 'signin.html')
+
+def cart(request):
+    return render(request, 'cart.html')
 
 
 def shop(request):

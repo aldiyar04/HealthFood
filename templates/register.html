@@ -8,30 +8,30 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
-                <form action="register" class="signupForm border p-4 bg-light shadow" method="post">
+                <form action="{% url 'register' %}" class="signupForm border p-4 bg-light shadow" method="post">
                     <h1 class="h4 mb-5 text-secondary">Create Your Account</h1>
 
                     {% csrf_token %}
 
                     <div class="row">
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-lg-6">
                             <label for="firstname" class="form-label">First Name<span
                                     class="text-danger">*</span></label>
                             <input type="text" name="firstname" id="firstname" class="form-control"
                                 placeholder="Enter your first name" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-lg-6">
                             <label for="lastname" class="form-label">Last Name<span class="text-danger">*</span></label>
                             <input type="text" name="lastname" id="lastname" class="form-control"
                                 placeholder="Enter your last name" required>
                         </div>
 
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-lg-6">
                             <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
                             <input type="text" name="email" id="email" class="form-control"
                                 placeholder="example@email.com" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-lg-6">
                             <label for="phone" class="form-label">Phone<span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" name="phone" id="phone" pattern="[0-9]-[0-9]{3}-[0-9]{3}-[0-9]{4}"
                                 placeholder="8-707-123-4567" required>
@@ -43,13 +43,13 @@
                                 placeholder="Manasov st., 8, 18" required>
                         </div>
 
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-lg-6">
                             <label for="password" class="form-label">Password<span class="text-danger">*</span></label>
                             <input type="password" name="password" id="password" class="form-control"
                                 placeholder="Enter your password" required>
                         </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="password2" class="form-label">Confirm Password<span
+                        <div class="mb-3 col-lg-6">
+                            <label for="password2" class="form-label">Password Confirmation<span
                                     class="text-danger">*</span></label>
                             <input type="password" name="password2" id="password2" class="form-control"
                                 placeholder="Retype password" required>
@@ -63,7 +63,7 @@
                     </div>
                 </form>
 
-                <div class="text-center mt-4 text-secondary lead">Already have an account? <a href="signin"
+                <div class="text-center mt-4 text-secondary">Already have an account? <a href="signin"
                         class="text-decoration-none">Sign in</a>.
                 </div>
             </div>

@@ -6,7 +6,7 @@
     {% if user.is_authenticated %}
         <div class="container mt-5">
             <div class="row">
-                <form action="edit_account" method="post" class="col-md-6 offset-md-3 border p-4 bg-light shadow">
+                <form action="{% url 'edit_account' %}" method="post" class="col-md-6 offset-md-3 border p-4 bg-light shadow">
                     <h1 class="h4 mb-5 text-secondary text-center">My Account</h1>
 
                     {% csrf_token %}
@@ -52,7 +52,7 @@
 
             <div class="row mt-5 text-center">
                 <div class="col-md-6 offset-md-3">
-                    <a href="signout" class="btn btn-outline-dark px-3">Sign Out</a>
+                    <a href="{% url 'signout' %}" class="btn btn-outline-dark px-3">Sign Out</a>
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
                             Cancel
                         </button>
 
-                        <form action="delete_account" method="post" class="col-md-6 offset-md-3">
+                        <form action="{% url 'delete_account' %}" method="post" class="col-md-6 offset-md-3">
                             {% csrf_token %}
 
                             <button type="submit" class="navCollapsable btn btn-outline-danger">

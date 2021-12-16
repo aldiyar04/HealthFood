@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 
+{% block content %}
     <!-- Main Image -->
     <section id="mainImage" class="container p-0">
         <div class="d-flex flex-column justify-content-center align-items-center text-center text-white h-100">
             <h1 id="mainHeading" class="text-uppercase">New Products, <br>Great Deals</h1>
-            <a href="shop" class="link-light text-decoration-none">Shop Now</a>
+            <a href="{% url 'shop' %}" class="link-light text-decoration-none">Shop Now</a>
         </div>
     </section>
 
@@ -21,11 +24,14 @@
 
             
                 {% for product_group in trending_product_groups %}
-                    <div class="carousel-item {% if product_group.0.name == 'Creamy Oak Spread' %}active{% endif %}">
+                    <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
                         <div class="row text-center">
 
                             {% for product in product_group %}
-                                <div class="col-3"><img src="{{product.image.url}}" class="d-block w-100" alt="">
+                                <div class="col-3">
+                                    <a href="{% url 'product' slug=product.slug %}">
+                                        <img src="{{product.image.url}}" class="d-block w-100" alt="">
+                                    </a>
                                     <div class="fw-bold">{{product.name}}</div>
                                     <div>${{product.price}}</div></div>
                             {% endfor %}
@@ -60,7 +66,7 @@
                         that
                         better service equals loyal customers.
                     </p>
-                    <a href="about" class="btn btn-light mt-3">
+                    <a href="{% url 'about' %}" class="btn btn-light mt-3">
                         <i class="bi bi-chevron-right"></i>Read More
                     </a>
                 </div>
@@ -71,4 +77,18 @@
         </div>
     </section>
 
+
+    <script>
+        const BREAKPOINT_MEDIUM = 768;
+        const BREAKPOINT_LARGE = 992;
+
+        const products = '{{data|escapejs}}';
+        console.log(products);
+
+        if (window.matchMedia(`(max-width: ${BREAKPOINT_MEDIUM}px)`).matches) {
+           console.log(`< ${BREAKPOINT_MEDIUM}px`);
+        } else {
+           console.log(`> ${BREAKPOINT_MEDIUM}px`);
+        }
+    </script>
 {% endblock %}
