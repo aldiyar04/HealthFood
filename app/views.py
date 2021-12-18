@@ -169,20 +169,18 @@ def update_cart(request):
     if 'cart' not in request.session:
         request.session['cart'] = {}
 
-    print('Cart Before:', request.session['cart'])
-
     if action == 'add' and product_id not in request.session['cart']:
         request.session['cart'][product_id] = 1     # 1 is product quantity
         request.session.modified = True
-        print('Added to cart')
     elif action == 'delete' and product_id in request.session['cart']:
         del request.session['cart'][product_id]
         request.session.modified = True
-        print('Deleted from cart')
+    elif action == 'set_quantity':
+        new_quantity = int(data['new_quantity'])
+        request.session['cart'][product_id] = new_quantity
+        request.session.modified = True
 
-    print('Cart After:', request.session['cart'])
-
-    return JsonResponse({'message': 'Updated cart. Action: ' + action + ', product ID: ' + product_id,})
+    return JsonResponse({'message': 'Updated cart. Action: ' + action + ', product ID: ' + str(product_id),})
 
 
 def place_order(request):
@@ -194,8 +192,9 @@ def place_order(request):
         for product_id, quantity in request.session['cart'].items():
             product = Product.objects.get(id=product_id)
             OrderProduct.objects.create(order=order, product=product, quantity=quantity)
+        messages.success(request, 'Order placed. We will contact you ASAP!')
 
-    return render(request, 'cart.html')
+    return redirect('/cart')
         
 
 def shop(request):
@@ -209,8 +208,6 @@ def product(request, slug=None):
     if slug is not None:
         product = Product.objects.get(slug=slug)
         if product:
-            # product_description_paras = product.description.split(r'\s{2,}')
-            # product_description_paras = [paragraph.strip() for paragraph in product_description_paras]
             product_description_paras = product.description.split('\r\n')
             product_description_paras = [paragraph.strip() for paragraph in product_description_paras if paragraph]
             product_short_description = product_description_paras[0]
