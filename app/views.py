@@ -27,6 +27,8 @@ def about(request):
 
 
 def contact(request):
+    if request.method == 'POST':
+        messages.success(request, 'Data submitted. We will reply ASAP!')
     return render(request, 'contact.html')
 
 

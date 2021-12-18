@@ -53,12 +53,22 @@ function removeCartItemFromPage(deleteFromCartBtn) {
 
     console.log('Entered removeCartItemFromPage')
 
-    // If there are no items anymore, refresh the page
-    // with a bit of delay to let the server delete the last item before the page reloads
+    // If there are no items anymore, switch to empty cart
     if (!$('.cartItem')[0]) {
-        setTimeout(function() {
-            location.reload(true)
-        }, 50);
+        let emptyCartDiv = $('<div>')
+            .attr('id', 'emptyCart')
+            .attr('class', 'container my-5 p-5 d-flex flex-column justify-content-center align-items-center lead fw-bold')
+            .append($('<div>The cart is empty</div>'))
+            .append(
+                $('<a>')
+                    .attr('href', '/shop')
+                    .append(
+                        $('<button>GO SHOPPING</button>')
+                            .attr('class', 'btn btn-success mt-3 px-4 py-3')
+                    )
+            )
+        
+        $('main').html(emptyCartDiv)
     }
 }
 

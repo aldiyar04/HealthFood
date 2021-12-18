@@ -13,7 +13,7 @@
                     <div class="col-3">Items: {{total.items}}</div>
                     <div class="col-3">Total: ${{total.price}}</div>
                     <div class="col-6">
-                        <button class="btn btn-success px-4 py-2 float-end">Order</button>
+                        <button class="btn btn-success px-4 py-2 float-end">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -55,13 +55,11 @@
                 {% endfor %}
             </div>
         {% else %}
-            <div id="emptyCart" class="container my-5 p-5 d-flex justify-content-center align-items-center lead fw-bold">
-                <div>
-                    <div>The cart is empty</div>
-                    <a href="{% url 'shop' %}">
-                        <button class="btn btn-success mt-3 px-4 py-3">GO SHOPPING</button>
-                    </a>
-                </div>
+            <div id="emptyCart" class="container my-5 p-5 d-flex flex-column justify-content-center align-items-center lead fw-bold">
+                <div>The cart is empty</div>
+                <a href="{% url 'shop' %}">
+                    <button class="btn btn-success mt-3 px-4 py-3">GO SHOPPING</button>
+                </a>
             </div>
         {% endif %}
     {% else %}
