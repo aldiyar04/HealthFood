@@ -1,0 +1,17 @@
+.productImage {
+    max-width: 175px;
+}
+
+.deleteFromCartBtn {
+    padding: 0;
+    background-color: inherit;
+    border: none;
+}
+
+.deleteFromCartBtn:hover {
+    cursor: pointer;
+}
+
+#emptyCart {
+    height: 70vh;
+}

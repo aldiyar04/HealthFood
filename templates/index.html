@@ -20,25 +20,9 @@
 
         <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
 
-            <div class="carousel-inner">
+            <div id="productCarouselInner" class="carousel-inner">
 
-            
-                {% for product_group in trending_product_groups %}
-                    <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-                        <div class="row text-center">
-
-                            {% for product in product_group %}
-                                <div class="col-3">
-                                    <a href="{% url 'product' slug=product.slug %}">
-                                        <img src="{{product.image.url}}" class="d-block w-100" alt="">
-                                    </a>
-                                    <div class="fw-bold">{{product.name}}</div>
-                                    <div>${{product.price}}</div></div>
-                            {% endfor %}
-
-                        </div>
-                    </div>
-                {% endfor %}
+                <!-- This carousel's contents are filled dynamically with the help of the JS script at the end of the document -->
 
             </div>
 
@@ -76,19 +60,110 @@
             </div>
         </div>
     </section>
+{% endblock %}
 
 
+{% block scripts %}
+    <!-- Dynamically change the number of products per carousel page based on the window width -->
     <script>
         const BREAKPOINT_MEDIUM = 768;
-        const BREAKPOINT_LARGE = 992;
 
-        const products = '{{data|escapejs}}';
-        console.log(products);
+        const PRODUCTS = getProducts();
+        const PRODUCT_GROUPS_4 = getProductGroups(PRODUCTS, 4);
+        const PRODUCT_GROUPS_2 = getProductGroups(PRODUCTS, 2);
 
-        if (window.matchMedia(`(max-width: ${BREAKPOINT_MEDIUM}px)`).matches) {
-           console.log(`< ${BREAKPOINT_MEDIUM}px`);
-        } else {
-           console.log(`> ${BREAKPOINT_MEDIUM}px`);
+        $(window).on('load', function() {
+            if (isWindowWide()) {
+                fillProductCarousel(PRODUCT_GROUPS_4);
+            } else {
+                fillProductCarousel(PRODUCT_GROUPS_2);
+            }
+        });
+
+        let wasWindowWide = isWindowWide();
+
+        $(window).on('resize', function() {
+            let windowWide = isWindowWide();
+
+            if (windowWide && !wasWindowWide) {
+                fillProductCarousel(PRODUCT_GROUPS_4);
+            } else if (!windowWide && wasWindowWide) {
+                fillProductCarousel(PRODUCT_GROUPS_2);
+            }
+
+            wasWindowWide = windowWide;
+        });
+
+        function fillProductCarousel(productGroups) {
+            const bootstrapMaxColumns = 12;
+
+            $('#productCarouselInner').empty();
+
+            productGroups.forEach(function(group, i) {
+                $('#productCarouselInner').append(
+                    $('<div>')
+                        .attr('class', `carousel-item ${i === 0 ? 'active' : ''}`)
+                        .append($('<div>')
+                            .attr('id', `productGroup${i}`)
+                            .attr('class', 'row text-center')
+                        )
+                );
+
+                const productDivColumns = Math.floor(bootstrapMaxColumns / group.length);
+                for (product of group) {
+                    let productDiv = $('<div>')
+                        .attr('class', `col-${productDivColumns}`);
+                    productDiv.append(
+                        $('<a>')
+                            .attr('href', `/products/${product.slug}`)
+                            .append(
+                                $('<img>')
+                                    .attr('src', `/media/${product.image}`)
+                                    .attr('class', 'd-block w-100')
+                            )
+                    );
+                    productDiv.append(
+                        $('<div>')
+                            .attr('class', 'fw-bold')
+                            .append(product.name)
+                    );
+                    productDiv.append(
+                        $('<div>')
+                            .append(product.price)
+                    );
+                        
+                    $(`#productGroup${i}`).append(productDiv);
+                }
+            });
+        }
+
+        function getProducts() {
+            let products = '{{products|escapejs}}';
+            products = JSON.parse(products);
+
+            for (let i = 0; i < products.length; i++) {
+                products[i] = products[i].fields;
+            }
+
+            return products;
+        }
+
+        function getProductGroups(products, groupSize) {
+            product_groups = []
+
+            for (let i = 0; i < products.length; i++) {
+                if (i % groupSize === 0) {
+                    product_groups.push(new Array());
+                }
+                const groupI = Math.floor(i / groupSize);
+                product_groups[groupI].push(products[i]);
+            }
+
+            return product_groups;
+        }
+
+        function isWindowWide() {
+            return window.matchMedia(`(min-width: ${BREAKPOINT_MEDIUM}px)`).matches;
         }
     </script>
 {% endblock %}

@@ -1,6 +1,70 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
 {% block content %}
-    
+    {% if user.is_authenticated %}
+        {% if cart_items %}
+            <div class="container mt-5 mb-3 p-4 border bg-light shadow">
+                <div class="row d-flex align-items-center fw-bold">
+                    <div class="col-3">Items: {{total.items}}</div>
+                    <div class="col-3">Total: ${{total.price}}</div>
+                    <div class="col-6">
+                        <button class="btn btn-success px-4 py-2 float-end">Order</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-5 mb-3 border p-4 bg-light shadow">
+                <div class="row mb-2 fw-bold">
+                    <div class="col-3"></div>
+                    <div class="col-3">Product</div>
+                    <div class="col-2">Price</div>
+                    <div class="col-2">Quantity</div>
+                    <div class="col-1">Total</div>
+                    <div class="col-1"></div>
+                </div>
+
+                {% for item in cart_items %}
+                    <div class="cartItem">
+                        <hr>
+
+                        <div class="row my-3 d-flex align-items-center">
+                            <div class="col-3">
+                                <img class="productImage w-lg-100 w-75" src="{{item.product.image.url}}" alt="">
+                            </div>
+                            <div class="col-3">{{item.product.name}}</div>
+                            <div class="col-2">${{item.product.price}}</div>
+                            <div class="col-2">
+                                <input type="number" min="1" max="99" value="{{item.quantity}}">
+                            </div>
+                            <div class="col-1">${{item.price_total}}</div> 
+                            <div class="col-1 d-flex justify-content-center">
+                                <button class="deleteFromCartBtn" data-productid="{{item.product.id}}" data-action="delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                            </div> 
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div id="emptyCart" class="container my-5 p-5 d-flex justify-content-center align-items-center lead fw-bold">
+                <div>
+                    <div>The cart is empty</div>
+                    <a href="{% url 'shop' %}">
+                        <button class="btn btn-success mt-3 px-4 py-3">GO SHOPPING</button>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        {% include 'secondary/access_denied.html' %}
+    {% endif %}
 {% endblock %}
