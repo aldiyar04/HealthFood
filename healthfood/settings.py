@@ -71,6 +71,8 @@ TEMPLATES = [
 
 AUTH_USER_MODEL = 'app.Customer'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
 WSGI_APPLICATION = 'healthfood.wsgi.application'
 
 

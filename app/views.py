@@ -1,17 +1,19 @@
 import json
+from django.core import serializers
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import auth
 from django.contrib import messages
+from django.http import JsonResponse
 
-from .models import Product, Customer
+from .models import Product, Customer, Order, OrderProduct
 
 
 def index(request):
     products = Product.objects.all()
     trending_products = products[4:16]
     context = {
-        'products': json.dumps(products),
+        'products': serializers.serialize('json', products),
         'trending_product_groups': get_product_groups(trending_products),
     }
     return render(request, 'index.html', context)
@@ -25,6 +27,8 @@ def about(request):
 
 
 def contact(request):
+    if request.method == 'POST':
+        messages.success(request, 'Data submitted. We will reply ASAP!')
     return render(request, 'contact.html')
 
 
@@ -85,6 +89,9 @@ def account(request):
 
 
 def edit_account(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     if request.method == 'POST':
         first_name = request.POST['firstname']
         last_name = request.POST['lastname']
@@ -115,12 +122,15 @@ def edit_account(request):
             customer.address = address
 
             customer.save()
-            messages.success(request, 'Edited successfully')
+            messages.success(request, 'Saved successfully')
 
     return render(request, 'account.html')
 
 
 def delete_account(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     if request.method == 'POST':
         email = request.POST['email']
         customer = Customer.objects.get(email=email)
@@ -130,8 +140,77 @@ def delete_account(request):
     return render(request, 'signin.html')
 
 def cart(request):
-    return render(request, 'cart.html')
+    context = {
+        'cart_items': []
+    }
 
+    items_total = 0
+    price_total = 0
+    if 'cart' in request.session:
+        for product_id, quantity in request.session['cart'].items():
+            product = Product.objects.get(id=product_id)
+            item_price_total = product.price * quantity
+            context['cart_items'].append({'product': product, 'quantity': quantity, 'price_total': item_price_total})
+            items_total += quantity
+            price_total += item_price_total
+
+    context['total'] = {
+        'items': items_total,
+        'price': price_total,
+    }
+
+    return render(request, 'cart.html', context)
+
+
+def cart_item_count(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
+    cart_item_count = 0 if 'cart' not in request.session else len(request.session['cart'])
+    return JsonResponse({'cart_item_count': cart_item_count})
+
+
+def update_cart(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
+    data = json.loads(request.body)
+    product_id = data['product_id']
+    action = data['action']
+
+    if 'cart' not in request.session:
+        request.session['cart'] = {}
+
+    if action == 'add' and product_id not in request.session['cart']:
+        request.session['cart'][product_id] = 1     # 1 is product quantity
+        request.session.modified = True
+    elif action == 'delete' and product_id in request.session['cart']:
+        del request.session['cart'][product_id]
+        request.session.modified = True
+    elif action == 'set_quantity':
+        new_quantity = int(data['new_quantity'])
+        request.session['cart'][product_id] = new_quantity
+        request.session.modified = True
+
+    return JsonResponse({'message': 'Updated cart. Action: ' + action + ', product ID: ' + str(product_id),})
+
+
+def place_order(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
+    if 'cart' not in request.session:
+        messages.error(request, 'The shopping cart is empty.')
+    else:
+        customer = request.user
+        order = Order.objects.create(customer = customer)
+        for product_id, quantity in request.session['cart'].items():
+            product = Product.objects.get(id=product_id)
+            OrderProduct.objects.create(order=order, product=product, quantity=quantity)
+        messages.success(request, 'Order placed. We will contact you ASAP!')
+
+    return redirect('/cart')
+        
 
 def shop(request):
     products = Product.objects.all()
@@ -144,8 +223,6 @@ def product(request, slug=None):
     if slug is not None:
         product = Product.objects.get(slug=slug)
         if product:
-            # product_description_paras = product.description.split(r'\s{2,}')
-            # product_description_paras = [paragraph.strip() for paragraph in product_description_paras]
             product_description_paras = product.description.split('\r\n')
             product_description_paras = [paragraph.strip() for paragraph in product_description_paras if paragraph]
             product_short_description = product_description_paras[0]
