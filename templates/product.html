@@ -32,9 +32,17 @@
 
                     <div class="d-flex mt-3 justify-content-lg-end justify-content-center">
                         {% if user.is_authenticated %}
-                            <button class="addToCartBtn btn btn-success mt-3 mb-2 px-4" data-productid="{{product.id}}" data-action="add">
-                                ADD TO CART
-                            </button>
+                            {% if not request.session.cart or product.id|stringformat:"i" not in request.session.cart %}
+                                <button class="addToCartBtn btn btn-success mt-3 mb-2 px-4" data-productid="{{product.id}}" data-action="add">
+                                    ADD TO CART
+                                </button>
+                            {% else %}
+                                <a href="{% url 'cart' %}">
+                                    <button class="btn btn-danger mt-3 mb-2 px-4">
+                                        GO TO CART
+                                    </button>
+                                </a>
+                            {% endif %}
                         {% else %}
                             <button class="btn btn-success mt-3 mb-2 px-4" data-bs-toggle="modal" data-bs-target="#addToCartMessage">
                                 ADD TO CART
