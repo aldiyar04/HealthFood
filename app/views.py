@@ -89,6 +89,9 @@ def account(request):
 
 
 def edit_account(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     if request.method == 'POST':
         first_name = request.POST['firstname']
         last_name = request.POST['lastname']
@@ -119,12 +122,15 @@ def edit_account(request):
             customer.address = address
 
             customer.save()
-            messages.success(request, 'Edited successfully')
+            messages.success(request, 'Saved successfully')
 
     return render(request, 'account.html')
 
 
 def delete_account(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     if request.method == 'POST':
         email = request.POST['email']
         customer = Customer.objects.get(email=email)
@@ -157,11 +163,17 @@ def cart(request):
 
 
 def cart_item_count(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     cart_item_count = 0 if 'cart' not in request.session else len(request.session['cart'])
     return JsonResponse({'cart_item_count': cart_item_count})
 
 
 def update_cart(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     data = json.loads(request.body)
     product_id = data['product_id']
     action = data['action']
@@ -184,6 +196,9 @@ def update_cart(request):
 
 
 def place_order(request):
+    if not request.user.is_authenticated:
+        return redirect('/signin')
+
     if 'cart' not in request.session:
         messages.error(request, 'The shopping cart is empty.')
     else:
